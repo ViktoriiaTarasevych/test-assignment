@@ -26,6 +26,11 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
+
+    public void setAgeThreshold(int ageThreshold) {
+        this.ageThreshold = ageThreshold;
+    }
+
     private int calculateAge(LocalDate birthdate) {
         LocalDate currentDate = LocalDate.now();
         return Period.between(birthdate, currentDate).getYears();
