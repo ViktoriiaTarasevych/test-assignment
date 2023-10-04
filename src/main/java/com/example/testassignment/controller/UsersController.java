@@ -3,11 +3,13 @@ package com.example.testassignment.controller;
 import com.example.testassignment.exception.ErrorResponse;
 import com.example.testassignment.model.Users;
 import com.example.testassignment.service.UsersService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -47,6 +49,20 @@ public class UsersController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to create user: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{userId}/profileImage")
+    public ResponseEntity<String> uploadProfileImage(@PathVariable Long userId,
+                                                     @RequestParam("file") MultipartFile file) {
+        try {
+            usersService.uploadProfileImage(userId, file);
+            return ResponseEntity.ok("Profile image uploaded successfully");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to upload profile image: " + e.getMessage());
         }
     }
 
@@ -90,7 +106,7 @@ public class UsersController {
     }
 
 
-    @GetMapping("/users")
+    @GetMapping("/users")    // users?from=2023-09-10&to=2023-09-20
     public ResponseEntity<?> getUser(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {

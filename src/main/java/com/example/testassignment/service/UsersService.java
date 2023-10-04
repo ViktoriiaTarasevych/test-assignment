@@ -6,7 +6,9 @@ import com.example.testassignment.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -49,6 +51,21 @@ public class UsersService {
             usersRepository.save(newUsers);
     }
 
+
+    public void uploadProfileImage(Long userId, MultipartFile file) {
+        Users users = usersRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        if (file != null && !file.isEmpty()) {
+            try {
+                byte[] imageBytes = file.getBytes();
+                users.setProfileImage(imageBytes);
+                usersRepository.save(users);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save profile image: " + e.getMessage());
+            }
+        }
+    }
 
     public Users getUserById(Long id) {
         return usersRepository.findById(id)
