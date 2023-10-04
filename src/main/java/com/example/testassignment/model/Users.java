@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +28,14 @@ public class Users {
     String firstName;
     String lastName;
     String email;
+    @Past(message = "Date of birth must be in the past")
     LocalDate birthdate;
     String address;
     int phoneNumber;
-
+    @Min(18)
+    private int age;
+    @AssertTrue(message = "Age must be greater than or equal to {ageThreshold}")
+    public boolean isAgeValid(int ageThreshold) {
+        return age >= ageThreshold;
+    }
 }

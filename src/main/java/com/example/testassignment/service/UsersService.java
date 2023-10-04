@@ -41,10 +41,12 @@ public class UsersService {
 
         int age = calculateAge(birthdate);
 
-        if (age >= ageThreshold) {
-            usersRepository.save(newUsers);
-        } else
+        newUsers.setAge(age);
+
+        if (!newUsers.isAgeValid(ageThreshold)) {
             throw new AgeRestrictionException("You do not meet the age requirement.");
+        }
+            usersRepository.save(newUsers);
     }
 
 
