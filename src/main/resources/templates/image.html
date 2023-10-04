@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+</head>
+<body>
+<h1>User List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Birthdate</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th>Age</th>
+        <th>Profile Image</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Здійснюємо ітерацію по списку користувачів -->
+    <th:each var="user : ${users}">
+        <tr>
+            <td>${user.id}</td>
+            <td>${user.firstName}</td>
+            <td>${user.lastName}</td>
+            <td>${user.email}</td>
+            <td>${user.birthdate}</td>
+            <td>${user.address}</td>
+            <td>${user.phoneNumber}</td>
+            <td>${user.age}</td>
+            <!-- Виводимо зображення як base64-кодований рядок -->
+            <td><img src="data:image/jpg;base64,${user.profileImage}" alt="Profile Image"></td>
+        </tr>
+    </th:each>
+    </tbody>
+</table>
+</body>
+</html>

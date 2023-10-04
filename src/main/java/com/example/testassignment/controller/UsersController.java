@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -126,5 +127,12 @@ public class UsersController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
+    }
+
+    @GetMapping("/image")
+    public String getImagePage(Model model) {
+        List<Users> users = usersService.getAllUsers();
+        model.addAttribute("users", users);
+        return "image";
     }
 }

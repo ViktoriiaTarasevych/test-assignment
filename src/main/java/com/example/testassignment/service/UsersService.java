@@ -121,4 +121,8 @@ public class UsersService {
         }
         return usersRepository.findByBirthdateBetween(from, to);
     }
+
+    public List<Users> getAllUsers() {
+        return usersRepository.findAll();
+    }
 }
